@@ -1,0 +1,15 @@
+{
+  "name": "fake.io",
+  "description": "Fake engine.io",
+  "version": "0.0.1",
+  "dependencies": {
+    "miniee": "git://github.com/mixu/miniee.git#master"
+  },
+  "main": "engine.js",
+  "devDependencies":{
+    "mocha": "*"
+  },
+  "scripts":{
+    "test": "make test"
+  }
+}
