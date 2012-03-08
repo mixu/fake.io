@@ -11,7 +11,7 @@ MiniEventEmitter.mixin(FakeServerClient);
 
 FakeServerClient.prototype.send = function(message) {
   var self = this;
-  console.log('receivePacket', message);
+//  console.log('receivePacket', message);
   process.nextTick(function() {
     self.parent.emit('message', message);
   });
@@ -57,6 +57,27 @@ FakeEngineClient.prototype.sendPacket = function(type, message) {
 
 FakeEngineClient.prototype.close = function() {
   this.emit('close');
+};
+
+FakeEngineClient.prototype.setOffline = function() {
+  var self = this;
+//  this.emit('close');
+  process.nextTick(function() {
+    delete self.server.clients[self.serverSocket.id];
+    self.server.clientCount--;
+    self.serverSocket.emit('close');
+  });
+};
+
+FakeEngineClient.prototype.setOnline = function() {
+  var self = this;
+//  this.emit('open');
+  process.nextTick(function() {
+    self.server.clients[self.serverSocket.id] = self.serverSocket;
+    self.server.clientCount++;
+
+    self.server.emit('connection', self.serverSocket);
+  });
 };
 
 module.exports = FakeEngineClient;
